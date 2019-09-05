@@ -35,27 +35,21 @@ private:
 	bool AdjustConsoleSize();
 	// Hide Console Cursor
 	bool HideCursor();
-
-	unsigned char* CurCanvas(int x, int y) { return &disp[curIdx % 2].canvas[x + (int)renderBounds.x * y]; }
-
 	// Fills whole canvas array with sprite
 	void FillCanvas(unsigned char sprite);
-
 	// Prints canvas char array on console
 	void DrawCanvas();
 
-	void ClearCanvas();
+	const unsigned char* CurCanvas(int x, int y) { return &canvas[x + (int)renderBounds.x * y]; }
+
 
 private:
 	HANDLE hOut;
 	Vector2D renderBounds;
-	int curIdx = 0;
 	int canvasSize = 0;
 
-	struct
-	{
-		unsigned char* canvas = nullptr;
-	} disp[2]; // double buffer our canvas for no flicker display
+	//one buffer looks okay. allocated 
+	unsigned char* canvas = nullptr;
 
 	//std::unordered_map<int, RaiderSprites> RenderList;
 	//std::list<GameObject

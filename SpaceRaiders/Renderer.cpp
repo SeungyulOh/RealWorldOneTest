@@ -16,17 +16,14 @@ Renderer::Renderer(const Vector2D& bounds)
 : renderBounds(bounds)
 {
 	canvasSize = (int)(bounds.x * bounds.y);
-	disp[0].canvas = new unsigned char[canvasSize];
-	disp[1].canvas = new unsigned char[canvasSize];
-	
+	canvas = new unsigned char[canvasSize];
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 
 Renderer::~Renderer()
 {
-	delete[] disp[0].canvas;
-	delete[] disp[1].canvas;
+	delete[] canvas;
 }
 
 
@@ -44,6 +41,8 @@ bool Renderer::Initialize()
 void Renderer::Update(const RenderItemList& RenderList)
 {
 	FillCanvas(RS_BackgroundTile);
+
+
 
 	//for (auto ri : RenderList)
 	//{
@@ -63,13 +62,9 @@ void Renderer::Update(const RenderItemList& RenderList)
 
 void Renderer::Update()
 {
-	ClearCanvas();
+	FillCanvas(RS_BackgroundTile);
 
-	setCursorPosition(1, 1);
-	std::cout << "test" << std::endl;
-	//FillCanvas(RS_BackgroundTile);
-
-	//DrawCanvas();
+	DrawCanvas();
 }
 
 bool Renderer::AdjustConsoleSize()
@@ -143,7 +138,7 @@ void Renderer::FillCanvas(unsigned char sprite)
 {
 	for (int i = 0; i < canvasSize; i++)
 	{
-		*CurCanvas(i,0) = sprite;
+		canvas[i] = sprite;
 	}
 }
 
@@ -168,19 +163,5 @@ void Renderer::DrawCanvas()
 		}
 		std::cout << std::endl;
 	}
-
-	curIdx++;
-
-}
-
-void Renderer::ClearCanvas()
-{
-	COORD topLeft = { 0, 0 };
-	DWORD written;
-
-	CONSOLE_SCREEN_BUFFER_INFO screen;
-	GetConsoleScreenBufferInfo(hOut, &screen);
-	FillConsoleOutputCharacterA(hOut, RS_BackgroundTile, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
-	//FillConsoleOutputAttribute(hOut, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
 }
 
