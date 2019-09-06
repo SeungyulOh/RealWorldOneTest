@@ -20,10 +20,10 @@ void Explosion::Update(PlayField& world)
 {
 	__super::Update(world);
 
-	timer--;
+	/*timer--;
 	if (!timer)
 	{
 		world.RemoveObject(this);
 		delete this;
-	}
+	}*/
 }

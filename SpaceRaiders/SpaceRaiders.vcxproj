@@ -146,8 +146,12 @@
     <ClInclude Include="Alien.h" />
     <ClInclude Include="AlienLaser.h" />
     <ClInclude Include="CommonHeader.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="DelegateManager.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="PlayerLaser.h" />
@@ -162,7 +166,13 @@
   <ItemGroup>
     <ClCompile Include="Alien.cpp" />
     <ClCompile Include="AlienLaser.cpp" />
+    <ClCompile Include="Delegate.cpp" />
+    <ClCompile Include="DelegateManager.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="PlayField.cpp" />

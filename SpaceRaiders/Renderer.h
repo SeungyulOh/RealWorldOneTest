@@ -40,7 +40,7 @@ private:
 	// Prints canvas char array on console
 	void DrawCanvas();
 
-	const unsigned char* CurCanvas(int x, int y) { return &canvas[x + (int)renderBounds.x * y]; }
+	const unsigned char* CurCanvas(int x, int y) { return &canvas.get()[x + (int)renderBounds.x * y]; }
 
 
 private:
@@ -48,8 +48,8 @@ private:
 	Vector2D renderBounds;
 	int canvasSize = 0;
 
-	//one buffer looks okay. allocated 
-	unsigned char* canvas = nullptr;
+	//one buffer looks okay. 
+	std::unique_ptr<unsigned char> canvas;
 
 	//std::unordered_map<int, RaiderSprites> RenderList;
 	//std::list<GameObject

@@ -1,0 +1,3 @@
+Seed = 1
+MaxTickCount = 100000
+SpawnAlienCountPerStage = 5

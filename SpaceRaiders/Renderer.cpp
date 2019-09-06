@@ -16,14 +16,13 @@ Renderer::Renderer(const Vector2D& bounds)
 : renderBounds(bounds)
 {
 	canvasSize = (int)(bounds.x * bounds.y);
-	canvas = new unsigned char[canvasSize];
+	canvas = std::make_unique<unsigned char>(canvasSize);
 	hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
 
 Renderer::~Renderer()
 {
-	delete[] canvas;
 }
 
 
@@ -128,7 +127,7 @@ bool Renderer::HideCursor()
 
 void Renderer::setCursorPosition(int x, int y)
 {
-	std::cout.flush();
+	
 	COORD coord = { (SHORT)x, (SHORT)y };
 
 	SetConsoleCursorPosition(hOut, coord);
@@ -138,7 +137,7 @@ void Renderer::FillCanvas(unsigned char sprite)
 {
 	for (int i = 0; i < canvasSize; i++)
 	{
-		canvas[i] = sprite;
+		canvas.get()[i] = sprite;
 	}
 }
 
@@ -149,19 +148,14 @@ void Renderer::DrawCanvas()
 	//if (gameMode)
 	//	std::cout << "Score: " << gameMode->GetScore() << std::endl;
 
-	for (int y = 0; y < renderBounds.y; y++)
+	/*for (int y = 0; y < renderBounds.y; y++)
 	{
 		for (int x = 0; x < renderBounds.x; x++)
 		{
 			setCursorPosition(x, y);
-			//std::cout << *CurCanvas(x,y);
-
-			if (RandomGeneratorHelper::GetIntRand(0, 9) % 8 == 0)
-			{
-				std::cout << "c";
-			}
+			std::cout << *CurCanvas(x,y);
 		}
 		std::cout << std::endl;
-	}
+	}*/
 }
 

@@ -23,24 +23,24 @@ void AlienLaser::Update(PlayField& world)
 
 	bool deleted = false;
 	pos.y += 1.f;
-	if (pos.y > world.bounds.y)
-	{
-		deleted = true;
-	}
-	GameObject* player = world.GetPlayerObject();
-	if (player && pos.IntCmp(player->pos))
-	{
-		deleted = true;
-		//Spawn explosion, kill player
-		GameObject& no = *(new Explosion);
-		no.pos = pos;
-		world.AddObject(&no);
-		world.RemoveObject(player);
-	}
+	//if (pos.y > world.bounds.y)
+	//{
+	//	deleted = true;
+	//}
+	//GameObject* player = world.GetPlayerObject();
+	//if (player && pos.IntCmp(player->pos))
+	//{
+	//	deleted = true;
+	//	//Spawn explosion, kill player
+	//	GameObject& no = *(new Explosion);
+	//	no.pos = pos;
+	//	world.AddObject(&no);
+	//	world.RemoveObject(player);
+	//}
 
 	if (deleted)
 	{
-		world.DespawnLaser((GameObject*)this);
+		//world.DespawnLaser((GameObject*)this);
 		delete this;
 	}
 }

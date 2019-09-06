@@ -27,24 +27,24 @@ void PlayerLaser::Update(PlayField& world)
 		deleted = true;
 	}
 
-	for (auto it : world.GameObjects())
-	{
-		if (strcmp(it->m_objType, "ot_AlienShip") == 0 && it->pos.IntCmp(pos))
-		{
-			deleted = true;
-			//Spawn explosion, kill the alien that we hit
-			//ToDo - add scoring
-			GameObject& no = *(new Explosion);
-			no.pos = pos;
-			world.AddObject(&no);
-			if (it->DecreaseHealth())
-				world.RemoveObject(it);
-		}
-	}
+	//for (auto it : world.GameObjects())
+	//{
+	//	if (strcmp(it->m_objType, "ot_AlienShip") == 0 && it->pos.IntCmp(pos))
+	//	{
+	//		deleted = true;
+	//		//Spawn explosion, kill the alien that we hit
+	//		//ToDo - add scoring
+	//		GameObject& no = *(new Explosion);
+	//		no.pos = pos;
+	//		world.AddObject(&no);
+	//		if (it->DecreaseHealth())
+	//			world.RemoveObject(it);
+	//	}
+	//}
 
 	if (deleted)
 	{
-		world.DespawnLaser(this);
+		//world.DespawnLaser(this);
 		delete this;
 	}
 }

@@ -19,17 +19,17 @@ PlayerShip::~PlayerShip()
 
 void PlayerShip::Update(PlayField& world)
 {
-	if (world.cotrollerInput->Left())
-		pos.x -= 1;
-	else if (world.cotrollerInput->Right())
-		pos.x += 1;
+	//if (world.cotrollerInput->Left())
+	//	pos.x -= 1;
+	//else if (world.cotrollerInput->Right())
+	//	pos.x += 1;
 
-	if (world.cotrollerInput->Fire() && world.PlayerLasers > 0)
-	{
-		//Spawn laser
-		GameObject& newLaser = *(new PlayerLaser);
-		newLaser.pos = pos;
-		world.SpawnLaser(&newLaser);
-	}
+	//if (world.cotrollerInput->Fire() && world.PlayerLasers > 0)
+	//{
+	//	//Spawn laser
+	//	GameObject& newLaser = *(new PlayerLaser);
+	//	newLaser.pos = pos;
+	//	world.SpawnLaser(&newLaser);
+	//}
 }
 

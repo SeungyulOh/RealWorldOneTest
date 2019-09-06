@@ -8,6 +8,7 @@ public:
 
 
 private:
-	int CurrentStage = 1;
+	unsigned int CurrentStage = 1;
+	unsigned int CurrentScore = 0;
 
 };
