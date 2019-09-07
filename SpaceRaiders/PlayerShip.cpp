@@ -4,32 +4,43 @@
 #include "PlayField.h"
 #include "PlayerLaser.h"
 #include "Input.h"
+#include "DelegateManager.h"
+#include "Delegate.h"
+#include "GameObject.h"
+#include "Region.h"
+#include "DelegateObject.h"
 
-PlayerShip::PlayerShip()
+PlayerShip::PlayerShip(unsigned int key , Vector2D SpawnLocation)
+	:GameObject(key, SpawnLocation)
 {
-	m_objType = new char[64]; 
-	strcpy(m_objType, "ot_PlayerShip"); 
+	type = GameObj_PlayerShip;
 	sprite = RS_Player;
+
 }
 
 PlayerShip::~PlayerShip()
 {
-	delete m_objType;
 }
 
-void PlayerShip::Update(PlayField& world)
+void PlayerShip::BeginPlay()
 {
-	//if (world.cotrollerInput->Left())
-	//	pos.x -= 1;
-	//else if (world.cotrollerInput->Right())
-	//	pos.x += 1;
+	__super::BeginPlay();
 
-	//if (world.cotrollerInput->Fire() && world.PlayerLasers > 0)
-	//{
-	//	//Spawn laser
-	//	GameObject& newLaser = *(new PlayerLaser);
-	//	newLaser.pos = pos;
-	//	world.SpawnLaser(&newLaser);
-	//}
+	DelegateManager::GetInstance().OnLeftPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnLeftPressed));
+	DelegateManager::GetInstance().OnLeftPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnRightPressed));
+}
+
+void PlayerShip::Update(float DeltaTime)
+{
+	__super::Update(DeltaTime);
+}
+
+void PlayerShip::Callback_OnLeftPressed()
+{
+}
+
+void PlayerShip::Callback_OnRightPressed()
+{
+
 }
 

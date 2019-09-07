@@ -5,73 +5,69 @@
 #include "Explosion.h"
 #include "AlienLaser.h"
 #include "CommonHeader.h"
+#include "Region.h"
+#include "DelegateManager.h"
+#include "RandomGeneratorHelper.h"
+#include "GameObjectManager.h"
 
-Alien::Alien()
+extern FConfig config;
+
+Alien::Alien(unsigned int key, Vector2D SpawnLocation)
+	:GameObject(key , SpawnLocation)
 {
-	m_objType = new char[64]; 
-	strcpy(m_objType, "ot_AlienShip"); 
-	sprite = RS_Alien; 
+	type = GameObj_AlienShip;
+	sprite = RS_Alien;
+	velocity = Vector2D(config.AlienVelocityX, config.AlienVelocityY);
 }
 
 Alien::~Alien()
 {
-	delete m_objType;
 }
 
 void Alien::Transform()
 {
 	state = as_Better;
 	sprite = RS_BetterAlien;
-	velocity *= 2.f;
+	//velocity *= 2.f;
 }
 
-bool Alien::DecreaseHealth()
+void Alien::Update(float DeltaTime)
 {
-	health -= 1.f; 
-	return health <= 0;
-}
+	Region& worldregion = const_cast<Region&>(WorldRegion);
 
-void Alien::Update(PlayField& world)
-{
-	pos.x += direction * velocity;
-	// Border check
-	//if (pos.x < 0 || pos.x >= world.bounds.x - 1)
-	//{
-	//	direction = -direction;
-	//	pos.y += 1;
-	//}
-
-	//// Border check vertical:
-	//if (pos.y >= world.bounds.y - 1)
-	//{
-	//	// kill player
-	//	GameObject* player = world.GetPlayerObject();
-	//	if (player && pos.IntCmp(player->pos))
-	//	{
-	//		//Spawn explosion
-	//		GameObject& no = *(new Explosion);
-	//		no.pos = pos;
-	//		world.AddObject(&no);
-	//		world.RemoveObject(player);
-	//	}
-	//}
-
-	// Transform into better Alien
-	if (state != as_Better)
+	if (false == worldregion.isInVertically(pos))
 	{
-		/*floatRand updateRate(-maxUpdateRate, 2 * maxUpdateRate);
-		energy += updateRate(rGen);
-		if (energy >= transformEnergy)
-			Transform();*/
+		DelegateManager::GetInstance().OnGameOver().Broadcast();
+		return;
 	}
 
-	//floatRand fireRate(0, 1);
-	//if (fireRate(rGen) < 0.5 && world.AlienLasers > 0)
-	//{
-	//	//Spawn laser
-	//	GameObject& newLaser = *(new AlienLaser);
-	//	newLaser.pos = pos;
-	//	world.SpawnLaser(&newLaser);
-	//}
+	//if Alien is inside of game region, change current location
+	if (worldregion.isInHorizontally(pos))
+	{
+		pos = pos + (velocity * DeltaTime);
+	}
+	else
+	{
+		//apply opposite velocity
+		velocity.x *= -1.f;
+		pos = pos + (velocity * DeltaTime);
+	}
+
+	//Check possibility to spawn laser
+	if (firetime >= config.AlienFireRate)
+	{
+		if (RandomGeneratorHelper::GetRandomSuccess())
+		{
+			GameObjectManager::GetInstance().CreateGameObject<AlienLaser>(Vector2D(pos.x, pos.y + 1));
+		}
+		firetime = 0.f;
+	}
+	else
+	{
+		firetime += DeltaTime;
+	}
+
+	__super::Update(DeltaTime);
+
 }
 

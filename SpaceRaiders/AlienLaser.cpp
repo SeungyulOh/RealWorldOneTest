@@ -5,43 +5,37 @@
 #include "Renderer.h"
 #include "CommonHeader.h"
 
-AlienLaser::AlienLaser()
+extern FConfig config;
+
+AlienLaser::AlienLaser(unsigned int key, Vector2D SpawnLocation /*= Vector2D(0, 0)*/)
+:GameObject(key, SpawnLocation)
 {
-	m_objType = new char[64]; 
-	strcpy(m_objType, "ot_AlienLaser"); 
+	type = GameObj_AlienLaser;
 	sprite = RS_AlienLaser;
+
+	velocity.x = 0.f;
+	velocity.y = config.AlienLaserVelocityY;
 }
 
 AlienLaser::~AlienLaser()
 {
-	delete[] m_objType;
 }
 
-void AlienLaser::Update(PlayField& world)
+
+void AlienLaser::Update(float DeltaTime)
 {
-	__super::Update(world);
+	Region& worldregion = const_cast<Region&>(WorldRegion);
 
-	bool deleted = false;
-	pos.y += 1.f;
-	//if (pos.y > world.bounds.y)
-	//{
-	//	deleted = true;
-	//}
-	//GameObject* player = world.GetPlayerObject();
-	//if (player && pos.IntCmp(player->pos))
-	//{
-	//	deleted = true;
-	//	//Spawn explosion, kill player
-	//	GameObject& no = *(new Explosion);
-	//	no.pos = pos;
-	//	world.AddObject(&no);
-	//	world.RemoveObject(player);
-	//}
-
-	if (deleted)
+	if (worldregion.isIn(pos))
 	{
-		//world.DespawnLaser((GameObject*)this);
-		delete this;
+		pos.y += velocity.y * DeltaTime;
 	}
+	else
+	{
+		Destroy();
+		return;
+	}
+
+	__super::Update(DeltaTime);
 }
 

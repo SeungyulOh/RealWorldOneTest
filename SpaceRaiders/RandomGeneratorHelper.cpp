@@ -21,3 +21,28 @@ float RandomGeneratorHelper::GetFloatRand(float min, float max)
 	floatRand result(min, max);
 	return result(rGen);
 }
+
+std::vector<int> RandomGeneratorHelper::GetDifferentIntRand(int min, int max, int count)
+{
+	std::vector<int> out;
+
+	while (true)
+	{
+		if (out.size() == count)
+			break;
+
+		int value = GetIntRand(min, max);
+		if (out.size() != 0 && out.back() == value)
+			continue;
+
+		out.push_back(value);
+	}
+
+	return out;
+}
+
+bool RandomGeneratorHelper::GetRandomSuccess()
+{
+	floatRand result(0.f, 100.f);
+	return result(rGen) >= 50.f;
+}

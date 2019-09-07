@@ -5,12 +5,12 @@
 #include "DelegateManager.h"
 #include "Delegate.h"
 
-void RndInput::Update()
+void RndInput::Update(float DeltaTime)
 {
 
 }
 
-void KeyboardInput::Update()
+void KeyboardInput::Update(float DeltaTime)
 {
 	static const HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
 	if (hIn == INVALID_HANDLE_VALUE)

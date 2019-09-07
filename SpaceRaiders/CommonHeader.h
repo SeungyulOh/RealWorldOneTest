@@ -1,23 +1,46 @@
 #pragma once
 #include "Vector2D.h"
+#include "Region.h"
+#include <vector>
 
-enum EGameObjectType
+struct FConfig
 {
-	GameObj_AlienShip,
-	GameObj_PlayerShip,
-	GameObj_AlienLaser,
-	GameObj_PlayerLaser,
-	GameObj_Explosion,
-	GameObj_End
+	//global
+	int Seed = 1;
+	float  MaxPlaySecond = 0;
+
+	//Gamemode
+	float  PlayTimePerStage = 0;
+	int SpawnAlienCountPerStage = 5;
+
+	//Alien
+	float AlienMaxUpdateRate = 0.01f;
+	float AlienMaxTransformEnery = 1.f;
+	float AlienMaxHealth = 1.f;
+	float AlienVelocityX = 0.5f;
+	float AlienVelocityY = 0.01f;
+	float AlienFireRate = 1.f;
+
+	//AlienLaser
+	float AlienLaserVelocityY = 0.f;
 };
 
-enum RaiderSprites
+struct RenderItem
 {
-	RS_BackgroundTile = ' ',
-	RS_Player = 'P',
-	RS_Alien = 'A',
-	RS_BetterAlien = 'B',
-	RS_PlayerLaser = 0xBA,
-	RS_AlienLaser = '|',
-	RS_Explosion = '*'
+	RenderItem(const Vector2D& iPos, unsigned char iSprite, bool isClear) : pos(iPos), sprite(iSprite), bClear(isClear) {};
+	Vector2D pos;
+	unsigned char sprite;
+	bool bClear;
 };
+typedef std::vector<RenderItem> RenderItemList;
+
+const int SizeX = 80;
+const int SizeY = 28;
+
+const Region WorldRegion(0, 2, SizeX - 1, SizeY - 1);
+const Region UIRegion(0, 0, SizeX - 1, 1);
+const Region GameOverRegion(SizeX / 4, SizeY / 2 - 2, (3* SizeX) / 4, SizeY / 2 + 2);
+
+#define CALLBACK_NOPARAM				std::function<void(DelegateObject&)> 
+#define CALLBACK_ONEPARAM_INT			std::function<void(DelegateObject&, int)> 
+#define CALLBACK_ONEPARAM_RENDERITEM	std::function<void(DelegateObject&, RenderItem)> 

@@ -8,14 +8,12 @@
 
 PlayerLaser::PlayerLaser()
 {
-	m_objType = new char[64]; 
-	strcpy(m_objType, "ot_PlayerLaser"); 
+	type = GameObj_PlayerLaser;
 	sprite = RS_PlayerLaser;
 }
 
 PlayerLaser::~PlayerLaser()
 {
-	delete[] m_objType;
 }
 
 void PlayerLaser::Update(PlayField& world)

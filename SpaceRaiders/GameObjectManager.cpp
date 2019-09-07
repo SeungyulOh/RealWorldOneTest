@@ -3,28 +3,29 @@
 #include <unordered_map>
 #include "GameObject.h"
 
-void GameObjectManager::Initialize()
-{
-
-}
 
 bool GameObjectManager::RemoveGameObject(unsigned int targetkey)
 {
-	auto iter = ObjectMap.find(targetkey);
-	if (iter != ObjectMap.end())
-	{
-		ObjectMap.erase(targetkey);
-		return true;
-	}
-
+	RemovePendingObject.push_back(targetkey);
 	return false;
 }
 
-template<typename T>
-void GameObjectManager::CreateGameObject()
+
+void GameObjectManager::Update(float DeltaTime)
 {
-	++unitserial;
-	ObjectMap.insert(unitserial, std::make_shared<T>(unitserial));
+	for (auto& element : ObjectMap)
+	{
+		element.second->Update(DeltaTime);
+	}
+
+	for (auto& element : RemovePendingObject)
+	{
+		auto iter = ObjectMap.find(element);
+		if (iter != ObjectMap.end())
+		{
+			ObjectMap.erase(element);
+		}
+	}
 }
 
 const GameObject* GameObjectManager::GetGameObject(unsigned int key)
@@ -37,3 +38,4 @@ const GameObject* GameObjectManager::GetGameObject(unsigned int key)
 
 	return nullptr;
 }
+

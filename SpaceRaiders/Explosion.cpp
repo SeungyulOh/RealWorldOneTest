@@ -6,14 +6,12 @@
 
 Explosion::Explosion()
 {
-	m_objType = new char[64];  
-	strcpy(m_objType, "ot_Explosion"); 
+	type = GameObj_Explosion;
 	sprite = RS_Explosion;
 }
 
 Explosion::~Explosion()
 {
-	delete[] m_objType;
 }
 
 void Explosion::Update(PlayField& world)

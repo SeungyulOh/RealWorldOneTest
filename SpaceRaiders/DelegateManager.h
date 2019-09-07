@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
+#include "Delegate.h"
 
-class Delegate;
 /*
 	this class contains delegates which are related to userinput,
 	holding unique_ptr of them.
@@ -31,8 +31,16 @@ public:
 	Delegate& OnLeftPressed() { return (*LeftPressed.get()); }
 	Delegate& OnRightPressed() { return (*RightPressed.get()); }
 	Delegate& OnFirePressed() { return (*FirePressed.get()); }
+	Delegate& OnStageChanged() { return (*StageChanged.get()); }
+	Delegate& OnScoreChanged() { return (*ScoreChanged.get()); }
+	Delegate& OnGameOver() { return (*GameOver.get()); }
+	Delegate& OnAddRenderItem() { return (*AddRenderItem.get()); }
 private:
 	std::unique_ptr<Delegate> LeftPressed;
 	std::unique_ptr<Delegate> RightPressed;
 	std::unique_ptr<Delegate> FirePressed;
+	std::unique_ptr<Delegate> StageChanged;
+	std::unique_ptr<Delegate> ScoreChanged;
+	std::unique_ptr<Delegate> GameOver;
+	std::unique_ptr<Delegate> AddRenderItem;
 };

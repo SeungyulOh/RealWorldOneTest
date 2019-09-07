@@ -1,3 +1,18 @@
+//Global
 Seed = 1
-MaxTickCount = 100000
-SpawnAlienCountPerStage = 5
+MaxPlaySecond = 600
+
+//GameMode
+PlayTimePerStage = 10
+SpawnAlienCountPerStage = 1
+
+//Alien
+AlienMaxUpdateRate = 0.01
+AlienMaxTransformEnery = 1
+AlienMaxHealth = 1
+AlienVelocityX = 8
+AlienVelocityY = 0.1
+AlienFireRate = 1
+
+//AlienLaser
+AlienLaserVelocityY = 5

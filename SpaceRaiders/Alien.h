@@ -1,25 +1,21 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Vector2D.h"
 
 class Alien : public GameObject
 {
 public:
-	Alien();
+	Alien(unsigned int key, Vector2D SpawnLocation = Vector2D(0, 0));
 	~Alien();
 
 protected:
-	virtual void Update(PlayField& world) override;
+	virtual void Update(float DeltaTime) override;
 
 public:
 	void Transform();
-	bool DecreaseHealth();
 
 private:
-	// Alien constants - these could move out into PlayField as configurable variables
-	const float maxUpdateRate = 0.01f;
-	const float transformEnergy = 1.f;
-	
 	enum AlienState
 	{
 		as_Normal,
@@ -27,10 +23,9 @@ private:
 	};
 
 	// Variables dictating energy level for upgrade, direction of movement, and current speed
-	float health = 1.f;
 	float energy = 0.f;
-	float direction = 1.f;
-	float velocity = 0.5f;
+	float firetime = 0.f;
+	
 	AlienState state;
 	
 };

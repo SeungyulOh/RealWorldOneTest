@@ -5,9 +5,9 @@
 class AlienLaser : public GameObject
 {
 public:
-	AlienLaser();
+	AlienLaser(unsigned int key, Vector2D SpawnLocation = Vector2D(0, 0));
 	~AlienLaser();
 
-	virtual void Update(PlayField& world) override;
+	virtual void Update(float DeltaTime) override;
 };
 

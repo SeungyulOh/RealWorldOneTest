@@ -3,39 +3,76 @@
 #include <functional>
 #include <list>
 #include <memory>
-#include "GameObject.h"
+#include <vector>
+#include "DelegateObject.h"
 
-class GameObject;
 
 /* 
 	A structure holding shared pointer of GameObject 
 	and it's Callback functions.
 */ 
-struct FGameObject_Callback
+struct FCallback
 {
-	std::shared_ptr<GameObject> Target;
-	std::function<void(GameObject&)> Callback;
+	std::shared_ptr<DelegateObject> Target;
+	std::function<void(DelegateObject&)> Callback;
 
 
-	FGameObject_Callback() {}
-	FGameObject_Callback(GameObject* target, std::function<void(GameObject&)>& callback)
+	FCallback() {}
+	FCallback(DelegateObject* target, std::function<void(DelegateObject&)>& callback)
 	{
-		Target = target->shared_from_this();
+		Target = target->Shared();
+		Callback = callback;
+	}
+};
+
+struct FCallback_OneParam_int
+{
+	std::shared_ptr<DelegateObject> Target;
+	std::function<void(DelegateObject& , int)> Callback;
+
+
+	FCallback_OneParam_int() {}
+	FCallback_OneParam_int(DelegateObject* target, std::function<void(DelegateObject& , int)>& callback)
+	{
+		Target = target->Shared();
+		Callback = callback;
+	}
+};
+
+struct FCallback_OneParam_Renderitem
+{
+	std::shared_ptr<DelegateObject> Target;
+	std::function<void(DelegateObject&, RenderItem)> Callback;
+
+
+	FCallback_OneParam_Renderitem() {}
+	FCallback_OneParam_Renderitem(DelegateObject* target, std::function<void(DelegateObject&, RenderItem)>& callback)
+	{
+		Target = target->Shared();
 		Callback = callback;
 	}
 };
 
 
+
 /*
-	Trying to imitate UE4's multicast delegate system.
+	Trying to imitate UE4's delegate system.
 */
 class Delegate
 {
 public:
-	virtual void AddDynamic(GameObject* target , std::function<void(GameObject&)>& callback);
 	virtual void Clear();
-	virtual void Broadcast();
 
+	virtual void AddDynamic(DelegateObject* target , std::function<void(DelegateObject&)>& callback);
+	virtual void AddDynamic(DelegateObject* target, std::function<void(DelegateObject&, int)>& callback);
+	virtual void Bind(DelegateObject* target, std::function<void(DelegateObject&, RenderItem)>& callback);
+	
+	virtual void Broadcast();
+	virtual void Broadcast(int value);
+	virtual void Execute(RenderItem item);
 protected:
-	std::vector<FGameObject_Callback> Callbacks;
+	std::vector<FCallback> Callbacks;
+	std::vector<FCallback_OneParam_int> CallbacksOneParamInt;
+	
+	FCallback_OneParam_Renderitem CallbackOneParamRenderItem;
 };
