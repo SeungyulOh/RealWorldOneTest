@@ -7,6 +7,7 @@
 #include "DelegateManager.h"
 #include "Alien.h"
 #include "RandomGeneratorHelper.h"
+#include "BlockingWall.h"
 
 extern FConfig config;
 
@@ -22,7 +23,9 @@ PlayField::~PlayField()
 void PlayField::Callback_OnStageChanged(int stage)
 {
 	SpawnAliens(stage);
+	SpawnBlockingWall(stage);
 }
+
 
 bool PlayField::Initialize()
 {
@@ -48,7 +51,7 @@ void PlayField::SpawnPlayer()
 
 void PlayField::SpawnAliens(int stage)
 {
-	int SpawnCount = config.SpawnAlienCountPerStage;
+	int SpawnCount = static_cast<int>(pow(config.SpawnAlienCountPerStage , stage));
 
 	std::vector<int> LocationX = RandomGeneratorHelper::GetDifferentIntRand(0, static_cast<int>(WorldRegion.right), SpawnCount);
 
@@ -59,4 +62,19 @@ void PlayField::SpawnAliens(int stage)
 		GameObjectManager::GetInstance().CreateGameObject<Alien>(location);
 	}
 }
+
+void PlayField::SpawnBlockingWall(int stage)
+{
+	int SpawnCount = static_cast<int>(pow(config.SpawnAlienCountPerStage, stage));
+
+	std::vector<int> LocationX = RandomGeneratorHelper::GetDifferentIntRand(0, static_cast<int>(WorldRegion.right), SpawnCount);
+
+	// Spawn Monster.
+	for (size_t i = 0; i < LocationX.size(); ++i)
+	{
+		Vector2D location = Vector2D(static_cast<float>(LocationX[i]), RandomGeneratorHelper::GetFloatRand(WorldRegion.top + 1.f , WorldRegion.bottom - 1.f));
+		GameObjectManager::GetInstance().CreateGameObject<BlockingWall>(location);
+	}
+}
+
 

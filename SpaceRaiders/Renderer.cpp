@@ -14,7 +14,10 @@
 #include <string>
 #include "DelegateManager.h"
 
-
+const COORD StageStrPosition = { 0 , 0 };
+const COORD StageNumberPosition = { 10 , 0 };
+const COORD ScoreStrPosition = { 20 , 0 };
+const COORD ScoreNumberPosition = { 30 , 0 };
 
 Renderer::Renderer(const Vector2D& bounds)
 : renderBounds(bounds)
@@ -36,12 +39,14 @@ Renderer::~Renderer()
 
 void Renderer::Callback_OnStageChanged(int stage)
 {
-	cachedStage = stage;
+	setCursorPosition(StageNumberPosition.X, StageNumberPosition.Y);
+	std::cout << stage;
 }
 
 void Renderer::Callback_OnScoreChanged(int score)
 {
-	cachedScore = score;
+	setCursorPosition(ScoreNumberPosition.X, ScoreNumberPosition.Y);
+	std::cout << score;
 }
 
 void Renderer::Callback_OnGameOver()
@@ -123,8 +128,8 @@ bool Renderer::AdjustConsoleSize()
 	GetConsoleScreenBufferInfo(hOut, &info);
 
 	//our desired buffsize and windowRect size.
-	COORD bufSize = { (SHORT)renderBounds.x, (SHORT)renderBounds.y };
-	SMALL_RECT consoleWindowRect = { 0, 0, (SHORT)renderBounds.x - 1, (SHORT)renderBounds.y - 1 };
+	COORD bufSize = { (SHORT)renderBounds.x, (SHORT)renderBounds.y + 1 };
+	SMALL_RECT consoleWindowRect = { 0, 0, (SHORT)renderBounds.x - 1, (SHORT)renderBounds.y };
 
 	// If the Current Buffer is Larger than what we want, Resize the 
 	// Console Window First, then the Buffer 
@@ -179,6 +184,16 @@ void Renderer::SetupUI()
 	{
 		std::cout << '-';
 	}
+
+	//Draw UI
+	setCursorPosition(StageStrPosition.X, StageStrPosition.Y);
+	std::cout << "Stage : ";
+
+	setCursorPosition(ScoreStrPosition.X, ScoreStrPosition.Y);
+	std::cout << "Score : ";
+
+	setCursorPosition(ScoreNumberPosition.X, ScoreNumberPosition.Y);
+	std::cout << "0";
 }
 
 void Renderer::setCursorPosition(int x, int y)
@@ -193,34 +208,48 @@ void Renderer::ClearCanvas(unsigned char sprite)
 	//don't want to iterate for-loop every frame
 	for (auto& element : ClearRenderList)
 	{
-		size_t index = static_cast<int>(element.pos.x) + static_cast<int>(renderBounds.x) * static_cast<int>(element.pos.y);
-		canvas[index] = sprite;
-		setCursorPosition(static_cast<int>(element.pos.x), static_cast<int>(element.pos.y));
-		std::cout << sprite;
+		int x = static_cast<int>(element.pos.x);
+		int y = static_cast<int>(element.pos.y);
+		if (x > WorldRegion.right || x < WorldRegion.left)
+			continue;
+		if (y < WorldRegion.top || y > WorldRegion.bottom)
+			continue;
+
+		size_t index = x + x* y;
+		if (index >= 0 && index < canvasSize)
+		{
+			canvas[index] = sprite;
+			setCursorPosition(x, y);
+			std::cout << sprite;
+		}
 	}
 	ClearRenderList.clear();
 }
 
 void Renderer::DrawCanvas()
 {
-	//Draw UI
-	setCursorPosition(UIRegion.top, UIRegion.left);
-	std::string UIstring = "Stage : " + std::to_string(cachedStage) + "\t" + "Score : " + std::to_string(cachedScore);
-	std::cout << UIstring << std::endl;
+
 
 	//Draw GameObject
 	for (auto& element : DrawRenderList)
 	{
-		//CachedRenderList
+		int x = static_cast<int>(element.pos.x);
+		int y = static_cast<int>(element.pos.y);
+		if (x > WorldRegion.right || x < WorldRegion.left)
+			continue;
+		if (y < WorldRegion.top || y > WorldRegion.bottom)
+			continue;
 
-		size_t index = static_cast<int>(element.pos.x) + static_cast<int>(renderBounds.x) * static_cast<int>(element.pos.y);
+		//CachedRenderList
+		size_t index = x + x * y;
 		if (index >= 0 && index < canvasSize)
 		{
 			canvas[index] = element.sprite;
+			setCursorPosition(x, y);
+			std::cout << element.sprite;
 		}
 
-		setCursorPosition(static_cast<int>(element.pos.x), static_cast<int>(element.pos.y));
-		std::cout << element.sprite;
+		
 	}
 	DrawRenderList.clear();
 

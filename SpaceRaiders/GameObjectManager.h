@@ -28,14 +28,17 @@ public:
 	void operator=(GameObjectManager const&) = delete;
 
 public:
+	void Update(float DeltaTime);
+
+	
 	template<typename T>
 	void CreateGameObject(Vector2D position);
 
-	void Update(float DeltaTime);
-	
-private:
 	const GameObject* GetGameObject(unsigned int key);
+private:
 	bool RemoveGameObject(unsigned int targetkey);
+
+	void CollisionCheck();
 
 private:
 	//indicate total created GameObject number.

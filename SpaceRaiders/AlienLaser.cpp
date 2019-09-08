@@ -4,6 +4,8 @@
 #include "Explosion.h"
 #include "Renderer.h"
 #include "CommonHeader.h"
+#include "Delegate.h"
+#include "GameObjectManager.h"
 
 extern FConfig config;
 
@@ -26,16 +28,37 @@ void AlienLaser::Update(float DeltaTime)
 {
 	Region& worldregion = const_cast<Region&>(WorldRegion);
 
-	if (worldregion.isIn(pos))
+	Vector2D nextpos = pos + velocity * DeltaTime;
+	if (worldregion.isIn(nextpos))
 	{
-		pos.y += velocity.y * DeltaTime;
+		pos = nextpos;
 	}
 	else
 	{
 		Destroy();
 		return;
 	}
+}
 
-	__super::Update(DeltaTime);
+void AlienLaser::Callback_OnCollision(unsigned int targetuniquekey)
+{
+	const GameObject* TargetObject = GameObjectManager::GetInstance().GetGameObject(targetuniquekey);
+	if (TargetObject)
+	{
+		EGameObjectType type = TargetObject->GetType();
+
+		switch (type)
+		{
+		case GameObj_PlayerLaser:
+		case GameObj_AlienShip:
+		case GameObj_PlayerShip:
+		{
+			DecreaseHp();
+		}break;
+
+		default:
+			break;
+		}
+	}
 }
 

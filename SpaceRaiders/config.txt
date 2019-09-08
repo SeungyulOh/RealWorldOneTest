@@ -1,18 +1,36 @@
 //Global
 Seed = 1
-MaxPlaySecond = 600
+MaxPlaySecond = 0
+isManualAttack = 1
 
 //GameMode
 PlayTimePerStage = 10
-SpawnAlienCountPerStage = 1
+SpawnAlienCountPerStage = 1.2
 
 //Alien
-AlienMaxUpdateRate = 0.01
+AlienMaxUpdateRate = 0.3
 AlienMaxTransformEnery = 1
 AlienMaxHealth = 1
 AlienVelocityX = 8
-AlienVelocityY = 0.1
+AlienVelocityY = 0.2
 AlienFireRate = 1
 
 //AlienLaser
 AlienLaserVelocityY = 5
+
+//PlayerShip
+PlayerFireRate = 0.5
+
+//PlayerLaser
+PlayerLaserVelocityY = 10
+
+//Explosion
+ExplosionSpawnCount = 4
+ExplosionLifeTime = 0.25
+
+//BlockingWall
+WallMaxHealth = 3
+
+//PowerUp
+PowerUpVelocityY = 6
+PowerUpActivateTime = 5;

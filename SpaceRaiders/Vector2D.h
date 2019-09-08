@@ -16,6 +16,12 @@ public:
 	~Vector2D() {}
 
 	bool IntCmp(const Vector2D& vec) { return int(x) == int(vec.x) && int(y) == int(vec.y); }
+	void Normalize() 
+	{
+		float length = static_cast<float>(sqrt(x*x + y * y));
+		x /= length;
+		y /= length;
+	}
 
 	float x;
 	float y;
@@ -46,7 +52,7 @@ public:
 		return x * other.x + y * other.y;
 	}
 
-	bool Vector2D::operator==(const Vector2D& other)
+	bool Vector2D::operator==(const Vector2D& other) const
 	{
 		return (x == other.x && y == other.y);
 	}

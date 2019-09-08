@@ -4,46 +4,67 @@
 #include "Explosion.h"
 #include "Renderer.h"
 #include "CommonHeader.h"
+#include "GameObject.h"
+#include "Delegate.h"
+#include "GameObjectManager.h"
 
+extern FConfig config;
 
-PlayerLaser::PlayerLaser()
+PlayerLaser::PlayerLaser(unsigned int key, Vector2D SpawnLocation /*= Vector2D(0, 0)*/)
+	:GameObject(key, SpawnLocation)
 {
 	type = GameObj_PlayerLaser;
 	sprite = RS_PlayerLaser;
+
+	velocity.x = 0.f;
+	velocity.y = -config.PlayerLaserVelocityY;
 }
 
 PlayerLaser::~PlayerLaser()
 {
 }
 
-void PlayerLaser::Update(PlayField& world)
+void PlayerLaser::Update(float DeltaTime)
 {
-	bool deleted = false;
-	pos.y -= 1.f;
-	if (pos.y < 0)
+	__super::Update(DeltaTime);
+
+	Region& worldregion = const_cast<Region&>(WorldRegion);
+
+	Vector2D nextpos = pos + velocity * DeltaTime;
+	if (worldregion.isIn(nextpos))
 	{
-		deleted = true;
+		pos = nextpos;
 	}
-
-	//for (auto it : world.GameObjects())
-	//{
-	//	if (strcmp(it->m_objType, "ot_AlienShip") == 0 && it->pos.IntCmp(pos))
-	//	{
-	//		deleted = true;
-	//		//Spawn explosion, kill the alien that we hit
-	//		//ToDo - add scoring
-	//		GameObject& no = *(new Explosion);
-	//		no.pos = pos;
-	//		world.AddObject(&no);
-	//		if (it->DecreaseHealth())
-	//			world.RemoveObject(it);
-	//	}
-	//}
-
-	if (deleted)
+	else
 	{
-		//world.DespawnLaser(this);
-		delete this;
+		Destroy();
+		return;
+	}
+}
+
+void PlayerLaser::Callback_OnCollision(unsigned int targetuniquekey)
+{
+	const GameObject* TargetObject = GameObjectManager::GetInstance().GetGameObject(targetuniquekey);
+	if (TargetObject)
+	{
+		EGameObjectType type = TargetObject->GetType();
+
+		switch (type)
+		{
+			case GameObj_AlienLaser:
+			case GameObj_AlienShip:
+			case GameObj_BlockingWall:
+			{
+				bool isDestroyed = DecreaseHp();
+				if(isDestroyed)
+				{
+					GameObjectManager::GetInstance().CreateGameObject<Explosion>(pos);
+				}
+			}break;
+
+			default:
+				break;
+		}
 	}
 }
 

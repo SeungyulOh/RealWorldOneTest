@@ -14,9 +14,18 @@ void GameMode::Callback_OnGameOver()
 	isGameOver = true;
 }
 
+void GameMode::Callback_OnAlienDestroyed(int score)
+{
+	//update score
+	CurrentScore += score;
+	DelegateManager::GetInstance().OnScoreChanged().Broadcast(CurrentScore);
+
+}
+
 bool GameMode::Initialize()
 {
 	DelegateManager::GetInstance().OnGameOver().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnGameOver));
+	DelegateManager::GetInstance().OnAlienDestroyed().AddDynamic(this, CALLBACK_ONEPARAM_INT(&DelegateObject::Callback_OnAlienDestroyed));
 	
 	DelegateManager::GetInstance().OnStageChanged().Broadcast(CurrentStage);
 
@@ -53,7 +62,6 @@ bool GameMode::Update(float DeltaTime)
 void GameMode::NextStage()
 {
 	++CurrentStage;
-	//SpawnAliens();
 
 	DelegateManager::GetInstance().OnStageChanged().Broadcast(CurrentStage);
 }

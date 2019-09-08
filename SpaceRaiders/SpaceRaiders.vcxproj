@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="Alien.h" />
     <ClInclude Include="AlienLaser.h" />
+    <ClInclude Include="BlockingWall.h" />
     <ClInclude Include="CommonHeader.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="DelegateManager.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="PlayField.h" />
+    <ClInclude Include="PowerUp.h" />
     <ClInclude Include="RandomGeneratorHelper.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="Renderer.h" />
@@ -168,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="Alien.cpp" />
     <ClCompile Include="AlienLaser.cpp" />
+    <ClCompile Include="BlockingWall.cpp" />
     <ClCompile Include="Delegate.cpp" />
     <ClCompile Include="DelegateManager.cpp" />
     <ClCompile Include="Explosion.cpp" />
@@ -178,6 +181,7 @@
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="PlayField.cpp" />
+    <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="RandomGeneratorHelper.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SpaceRaiders.cpp" />

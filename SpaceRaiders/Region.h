@@ -12,19 +12,26 @@ struct Region
 	int right;
 	int bottom;
 
-	bool isIn(Vector2D in) 
+	bool isIn(Vector2D in) const
 	{
-		return (in.x >= left && in.x <= right && in.y >= top && in.y <= bottom);
+		//int x = static_cast<int>(in.x);
+		//int y = static_cast<int>(in.y);
+		//return (x >= left && x <= right && y >= top && y <= bottom);
+		return (in.x >= left && in.x < right + 1 && in.y >= top && in.y < bottom + 1);
 	}
 
-	bool isInHorizontally(Vector2D in) 
+	bool isInHorizontally(Vector2D in) const
 	{
-		return (in.x >= left && in.x <= right);
+		/*int x = static_cast<int>(in.x);
+		return (x >= left && x <= right);*/
+		return (in.x >= left && in.x < right + 1);
 	}
 
-	bool isInVertically(Vector2D in)
+	bool isInVertically(Vector2D in) const
 	{
-		return (in.y >= top && in.y <= bottom);
+		/*int y = static_cast<int>(in.y);
+		return (y >= top && y <= bottom);*/
+		return (in.y >= top && in.y < bottom + 1);
 	}
 
 };

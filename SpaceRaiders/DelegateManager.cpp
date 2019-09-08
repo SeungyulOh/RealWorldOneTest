@@ -11,4 +11,5 @@ void DelegateManager::Initialize()
 	ScoreChanged = std::make_unique<Delegate>();
 	GameOver = std::make_unique<Delegate>();
 	AddRenderItem = std::make_unique<Delegate>();
+	AlienDestroyed = std::make_unique<Delegate>();
 }

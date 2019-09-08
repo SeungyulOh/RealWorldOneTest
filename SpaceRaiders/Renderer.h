@@ -47,9 +47,6 @@ private:
 	Vector2D renderBounds;
 	int canvasSize = 0;
 
-	int cachedStage = 1;
-	int cachedScore = 0;
-
 	//one buffer looks okay. 
 	std::vector<unsigned char> canvas;
 

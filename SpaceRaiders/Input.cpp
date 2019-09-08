@@ -5,11 +5,7 @@
 #include "DelegateManager.h"
 #include "Delegate.h"
 
-void RndInput::Update(float DeltaTime)
-{
-
-}
-
+extern FConfig config;
 void KeyboardInput::Update(float DeltaTime)
 {
 	static const HANDLE hIn = GetStdHandle(STD_INPUT_HANDLE);
@@ -52,6 +48,13 @@ void KeyboardInput::Update(float DeltaTime)
 			case VK_RIGHT:
 			{
 				DelegateManager::GetInstance().OnRightPressed().Broadcast();
+			}break;
+			case VK_SPACE:
+			{
+				if (config.isManualAttack)
+				{
+					DelegateManager::GetInstance().OnFirePressed().Broadcast();
+				}
 			}break;
 			default:
 			{

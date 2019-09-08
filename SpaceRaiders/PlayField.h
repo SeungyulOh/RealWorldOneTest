@@ -25,4 +25,5 @@ public:
 private:
 	void SpawnPlayer();
 	void SpawnAliens(int stage);
+	void SpawnBlockingWall(int stage);
 };

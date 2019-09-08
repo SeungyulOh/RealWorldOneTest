@@ -11,6 +11,7 @@ public:
 
 public:
 	virtual void Callback_OnGameOver() override;
+	virtual void Callback_OnAlienDestroyed(int score);
 public:
 	bool Initialize();
 	bool Update(float DeltaTime);

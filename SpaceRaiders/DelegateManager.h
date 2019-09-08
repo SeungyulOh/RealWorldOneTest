@@ -35,6 +35,7 @@ public:
 	Delegate& OnScoreChanged() { return (*ScoreChanged.get()); }
 	Delegate& OnGameOver() { return (*GameOver.get()); }
 	Delegate& OnAddRenderItem() { return (*AddRenderItem.get()); }
+	Delegate& OnAlienDestroyed() { return (*AlienDestroyed.get()); }
 private:
 	std::unique_ptr<Delegate> LeftPressed;
 	std::unique_ptr<Delegate> RightPressed;
@@ -43,4 +44,5 @@ private:
 	std::unique_ptr<Delegate> ScoreChanged;
 	std::unique_ptr<Delegate> GameOver;
 	std::unique_ptr<Delegate> AddRenderItem;
+	std::unique_ptr<Delegate> AlienDestroyed;
 };

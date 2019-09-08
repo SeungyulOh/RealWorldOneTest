@@ -9,5 +9,6 @@ public:
 	~AlienLaser();
 
 	virtual void Update(float DeltaTime) override;
+	virtual void Callback_OnCollision(unsigned int targetuniquekey);
 };
 

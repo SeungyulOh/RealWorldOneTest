@@ -9,10 +9,11 @@ public:
 	Alien(unsigned int key, Vector2D SpawnLocation = Vector2D(0, 0));
 	~Alien();
 
-protected:
-	virtual void Update(float DeltaTime) override;
-
 public:
+	virtual void Update(float DeltaTime) override;
+	virtual void Callback_OnCollision(unsigned int targetuniquekey) override;
+
+private:
 	void Transform();
 
 private:
@@ -25,7 +26,8 @@ private:
 	// Variables dictating energy level for upgrade, direction of movement, and current speed
 	float energy = 0.f;
 	float firetime = 0.f;
+	float firerate = 0.f;
 	
-	AlienState state;
+	AlienState state = as_Normal;
 	
 };

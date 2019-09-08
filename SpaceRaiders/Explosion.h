@@ -5,14 +5,27 @@
 class Explosion : public GameObject
 {
 public:
-	Explosion();
+	Explosion(unsigned int key, Vector2D SpawnLocation = Vector2D(0, 0));
 	~Explosion();
 
-protected:
-	virtual void Update(PlayField& world) override;
+public:
+	virtual void BeginPlay() override;
+};
+
+class SubExplosion : public GameObject
+{
+public:
+	SubExplosion(unsigned int key, Vector2D SpawnLocation = Vector2D(0, 0));
+	~SubExplosion();
+
+public:
+	virtual void BeginPlay() override;
+	virtual void Update(float DeltaTime) override;
+
+	void SetVelocity(Vector2D vel);
 
 private:
-	// Explosion lasts 5 ticks before it dissappears
-	int timer = 5;
-	
+	float LifeTime = 0.5f;
+	float ElapsedTime = 0.f;
+	static int SpawnCount;
 };
