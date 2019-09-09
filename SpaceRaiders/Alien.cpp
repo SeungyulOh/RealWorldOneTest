@@ -113,7 +113,11 @@ void Alien::Callback_OnCollision(unsigned int targetuniquekey)
 				DelegateManager::GetInstance().OnAlienDestroyed().Broadcast(score);
 
 				//check possibility to spawn powerup
-				GameObjectManager::GetInstance().CreateGameObject<PowerUp>(Vector2D(pos.x, pos.y + 1));
+				bool bSpawnPowerUp = RandomGeneratorHelper::GetFloatRand(1.f, 100.f) <= config.PowerUpSpawnProb;
+				if (bSpawnPowerUp)
+				{
+					GameObjectManager::GetInstance().CreateGameObject<PowerUp>(Vector2D(pos.x, pos.y + 1));
+				}
 			}
 		}break;
 

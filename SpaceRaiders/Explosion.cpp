@@ -52,6 +52,7 @@ void SubExplosion::BeginPlay()
 	++SpawnCount;
 	int direction = SpawnCount % config.ExplosionSpawnCount;
 
+	//decide direction 
 	float radian = ((2 * PI) / config.ExplosionSpawnCount) * direction + (PI / 4.f);
 	velocity = Vector2D(cosf(radian), sinf(radian));
 	velocity = velocity * 10.f;

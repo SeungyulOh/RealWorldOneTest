@@ -33,4 +33,7 @@ WallMaxHealth = 3
 
 //PowerUp
 PowerUpVelocityY = 6
-PowerUpActivateTime = 5;
+PowerUpActivateTime = 5
+PowerUpMoveSpeedScale = 1.5
+PowerUpAttackSpeedScale = 2
+PowerUpSpawnProb = 100

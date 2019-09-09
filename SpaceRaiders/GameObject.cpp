@@ -58,7 +58,7 @@ void GameObject::UpdateRenderItemList()
 {
 	if (Prevpos.IntCmp(pos) == false)
 	{
-		// delete
+		// clear prev position.
 		DelegateManager::GetInstance().OnAddRenderItem().Execute(RenderItem(Prevpos, sprite, true));
 		Prevpos = pos;
 	}

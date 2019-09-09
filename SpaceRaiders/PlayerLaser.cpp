@@ -61,6 +61,7 @@ void PlayerLaser::Callback_OnCollision(unsigned int targetuniquekey)
 				bool isDestroyed = DecreaseHp();
 				if(isDestroyed)
 				{
+					//spawn explosion when this is destroyed.
 					GameObjectManager::GetInstance().CreateGameObject<Explosion>(pos);
 				}
 			}break;

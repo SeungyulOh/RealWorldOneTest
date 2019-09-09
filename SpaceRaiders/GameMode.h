@@ -1,7 +1,12 @@
 #pragma once
 #include "DelegateObject.h"
 
+/*
+	This class contains basic game info.
+	stage info, current score
 
+	This class checks whether game is over or not
+*/
 
 class GameMode : public DelegateObject
 {

@@ -6,6 +6,7 @@
 #include "PowerUp.h"
 #include <unordered_set>
 
+
 struct FBuff
 {
 	FBuff() {}
@@ -15,16 +16,21 @@ struct FBuff
 	EPowerUpType Type = PU_None;
 	float Duration = 0.f;
 
+
 	bool operator == (FBuff const& rhs) const
 	{
 		return Type == rhs.Type;
 	}
 
+	//return true if this buff is deactivated.
 	bool Update(float DeltaTime);
+	
+	// will modify conveyed-parameters
 	void Activate(float& firerate, Vector2D& velocity, bool& isMultishot);
 	void DeActivate(float& firerate, Vector2D& velocity, bool& isMultishot);
 };
 
+// hash function for storing FBuff as value of unordered_set.
 struct KeyHasher_Buff
 {
 	std::size_t operator()(const FBuff& vec) const
@@ -33,6 +39,7 @@ struct KeyHasher_Buff
 	}
 };
 
+// player class
 class PlayerShip : public GameObject
 {
 public:
@@ -47,6 +54,7 @@ public:
 	virtual void Callback_OnRightPressed() override;
 	virtual void Callback_OnFirePressed() override;
 	virtual void Callback_OnCollision(unsigned int targetuniquekey) override;
+
 private:
 	void Process_SpawnLaser();
 
@@ -55,5 +63,6 @@ private:
 	float firerate = 0.f;
 	bool bMultiShot = false;
 
+	// activated buff from power-up class.
 	std::unordered_set<FBuff , KeyHasher_Buff> ActivatedBuff;
 };

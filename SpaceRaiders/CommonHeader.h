@@ -5,37 +5,46 @@
 
 struct FConfig
 {
-	//global
+	//random seed
 	int Seed = 1;
+	
+	//if you set this value non-zero, this game will end after this value is reached
 	float  MaxPlaySecond = 0;
+	
+	//VK_SPACE key will be used to shoot playerlaser if you set to true, 
+	//Otherwise playerlaser will be spawned randomly
 	bool isManualAttack = false;
 
-	//Gamemode
+	//interval(sec) to next stage
 	float PlayTimePerStage = 0;
+	//Alien will be increased exponentially and this value will be the base.
 	float SpawnAlienCountPerStage = 5;
 
-	//Alien
+	//Alien eneryrate to transform better alien
 	float AlienMaxUpdateRate = 0.01f;
+	//Alien MaxTransform energy value
 	float AlienMaxTransformEnery = 1.f;
 	float AlienMaxHealth = 1.f;
 	float AlienVelocityX = 0.5f;
 	float AlienVelocityY = 0.01f;
+	//Alien Attack Speed Value
 	float AlienFireRate = 1.f;
 
-	//AlienLaser
+	//AlienLaser Velocity
 	float AlienLaserVelocityY = 0.f;
 
-	//Player
+	//Player Attack Speed Value
 	float	PlayerFireRate = 0.f;
 
-	//PlayerLaser
+	//PlayerLaser Velocity
 	float PlayerLaserVelocityY = 0.f;
 
-	//Explosion
+	//Explosion spawns multi-subexplosion object using this number
 	int ExplosionSpawnCount = 0;
+	//Explosion LifeTime
 	float ExplosionLifeTime = 0.f;
 
-	//BlockingWall
+	//BlockingWall Hp
 	int WallMaxHealth = 0;
 
 	//PowerUp
@@ -43,8 +52,10 @@ struct FConfig
 	float PowerUpActivateTime = 5.f;
 	float PowerUpMoveSpeedScale = 1.5f;
 	float PowerUpAttackSpeedScale = 2.f;
+	float PowerUpSpawnProb = 0.f;
 };
 
+//Structure holding rendering-related values.
 struct RenderItem
 {
 	RenderItem(const Vector2D& iPos, unsigned char iSprite, bool isClear) : pos(iPos), sprite(iSprite), bClear(isClear) {};

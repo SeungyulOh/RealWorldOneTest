@@ -6,6 +6,7 @@
 #include "Vector2D.h"
 #include "Delegate.h"
 
+//creating unique key of Vector2D
 struct KeyHasher
 {
 	std::size_t operator()(const Vector2D& vec) const
@@ -26,6 +27,8 @@ bool GameObjectManager::RemoveGameObject(unsigned int targetkey)
 void GameObjectManager::CollisionCheck()
 {
 	//Collision Check
+
+	//key - object position vector , value - object unique key.
 	std::unordered_multimap<Vector2D, unsigned int, KeyHasher> CollisionMultimap;
 	for (auto& element : ObjectMap)
 	{

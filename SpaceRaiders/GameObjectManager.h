@@ -7,7 +7,9 @@
 
 
 /*
-	this class contains instances of Gameobject,
+	This class contains every instances of Gameobject.
+
+	Gameobject class can be instantiated only from this class.
 */
 class GameObject;
 class GameObjectManager
@@ -35,6 +37,7 @@ public:
 	void CreateGameObject(Vector2D position , Vector2D initialvelocity = Vector2D(0.f,0.f));
 
 	const GameObject* GetGameObject(unsigned int key);
+
 private:
 	bool RemoveGameObject(unsigned int targetkey);
 
@@ -47,6 +50,8 @@ private:
 	//unordered_map has O(1) performance in case of insert , erase and find.
 	std::unordered_map<unsigned int, std::shared_ptr<GameObject>> ObjectMap;
 
+	//Gameobjects which need to be deallocated stored here, 
+	//and deleted after every objects are update. 
 	std::vector<unsigned int> RemovePendingObject;
 };
 

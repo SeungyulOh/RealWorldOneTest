@@ -2,6 +2,12 @@
 
 #include "GameObject.h"
 
+/*
+	visual explosion effects
+
+	when this object is spawned, 
+	this spawned subexplosion objects as much as the number defined config files.
+*/
 class Explosion : public GameObject
 {
 public:
@@ -11,6 +17,7 @@ public:
 public:
 	virtual void BeginPlay() override;
 };
+
 
 class SubExplosion : public GameObject
 {

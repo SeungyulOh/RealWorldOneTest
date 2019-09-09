@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Vector2D.h"
 
+
 class Alien : public GameObject
 {
 public:
@@ -24,11 +25,12 @@ private:
 		as_Better
 	};
 
-	// Variables dictating energy level for upgrade, direction of movement, and current speed
+	// Variables dictating energy level for upgrade, and current speed
 	float energy = 0.f;
 	float firetime = 0.f;
 	float firerate = 0.f;
 	
+	// Current State
 	AlienState state = as_Normal;
 	
 };

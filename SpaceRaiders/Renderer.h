@@ -17,6 +17,11 @@ public:
 	virtual void Callback_OnScoreChanged(int score) override;
 	virtual void Callback_OnGameOver() override;
 	virtual void Callback_OnAddRenderItem(RenderItem item) override;
+	virtual void Callback_OnAlienCountChanged(int count) override;
+	virtual void Callback_OnWallCountChanged(int count) override;
+	virtual void Callback_OnAtkSpeedUpRemainSec(int sec) override;
+	virtual void Callback_OnMovSpeedUpRemainSec(int sec) override;
+	virtual void Callback_OnMultishotRemainSec(int sec) override;
 
 	// Initial Settings - console size, cursor visibility
 	bool Initialize();
@@ -39,20 +44,21 @@ private:
 	// Prints canvas char array on console
 	void DrawCanvas();
 
-	//const unsigned char* CurCanvas(int x, int y) { return &canvas.get()[x + (int)renderBounds.x * y]; }
-
-
+	void DrawGameOver();
 private:
 	HANDLE hOut;
 	Vector2D renderBounds;
 	int canvasSize = 0;
 
-	//one buffer looks okay. 
+	//holding whole render sprite values for console window. 
 	std::vector<unsigned char> canvas;
 
-	//cache previous renderlist and clear them before drawing new renderlist.
+	//renderlist to clear
 	RenderItemList ClearRenderList;
+	//renderlist to draw
 	RenderItemList DrawRenderList;
+
+	bool IsGameOver = false;
 	
 };
 

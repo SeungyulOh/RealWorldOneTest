@@ -36,6 +36,7 @@ void PlayerShip::BeginPlay()
 
 	velocity = Vector2D(1.f, 0.f);
 
+	//binding keyinput 
 	DelegateManager::GetInstance().OnLeftPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnLeftPressed));
 	DelegateManager::GetInstance().OnRightPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnRightPressed));
 	DelegateManager::GetInstance().OnFirePressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnFirePressed));
@@ -70,7 +71,7 @@ void PlayerShip::Update(float DeltaTime)
 		bool bDeactivated = buff.Update(DeltaTime);
 		if (bDeactivated)
 		{
-			RemovePendingBuffs.push_back(buff);
+  			RemovePendingBuffs.push_back(buff);
 		}
 	}
 
@@ -190,6 +191,22 @@ bool FBuff::Update(float DeltaTime)
 	if (Duration < 0)
 		return true;
 
+	int RemainTime = static_cast<int>(Duration) + 1;
+	switch (Type)
+	{
+	case PU_MoveSpeed:
+		DelegateManager::GetInstance().OnMovSpeedRemainTime().Broadcast(RemainTime);
+		break;
+
+	case PU_AttackSpeed:
+		DelegateManager::GetInstance().OnAtkSpeedRemainTime().Broadcast(RemainTime);
+		break;
+
+	case PU_Multishot:
+		DelegateManager::GetInstance().OnMultiShotRemainTime().Broadcast(RemainTime);
+		break;
+	}
+
 	return false;
 }
 
@@ -217,14 +234,17 @@ void FBuff::DeActivate(float& firerate, Vector2D& velocity, bool& isMultishot)
 	{
 	case PU_MoveSpeed:
 		velocity = velocity / config.PowerUpMoveSpeedScale;
+		DelegateManager::GetInstance().OnMovSpeedRemainTime().Broadcast(0);
 		break;
 
 	case PU_AttackSpeed:
 		firerate *= config.PowerUpAttackSpeedScale;
+		DelegateManager::GetInstance().OnAtkSpeedRemainTime().Broadcast(0);
 		break;
 
 	case PU_Multishot:
 		isMultishot = false;
+		DelegateManager::GetInstance().OnMultiShotRemainTime().Broadcast(0);
 		break;
 	}
 }

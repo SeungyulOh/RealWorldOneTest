@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BlockingWall.h"
 #include "GameObjectManager.h"
+#include "DelegateManager.h"
 
 extern FConfig config;
 
@@ -28,7 +29,12 @@ void BlockingWall::Callback_OnCollision(unsigned int targetuniquekey)
 		{
 		case GameObj_PlayerLaser:
 		{
-			DecreaseHp();
+			bool isDestroyed = DecreaseHp();
+			if (isDestroyed)
+			{
+				//update ui
+				DelegateManager::GetInstance().OnWallDestroyed().Broadcast();
+			}
 		}break;
 
 		default:
