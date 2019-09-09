@@ -121,6 +121,13 @@ void Alien::Callback_OnCollision(unsigned int targetuniquekey)
 			}
 		}break;
 
+		case GameObj_AlienShip:
+		{
+			Destroy();
+			DelegateManager::GetInstance().OnAlienDestroyed().Broadcast(0);
+		}break;
+			
+
 		default:
 			break;
 		}
