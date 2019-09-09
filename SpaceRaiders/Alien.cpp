@@ -18,12 +18,18 @@ Alien::Alien(unsigned int key, Vector2D SpawnLocation)
 {
 	type = GameObj_AlienShip;
 	sprite = RS_Alien;
-	velocity = Vector2D(config.AlienVelocityX, config.AlienVelocityY);
 	firerate = config.AlienFireRate;
 }
 
 Alien::~Alien()
 {
+}
+
+void Alien::BeginPlay()
+{
+	__super::BeginPlay();
+
+	velocity = Vector2D(config.AlienVelocityX, config.AlienVelocityY);
 }
 
 void Alien::Transform()

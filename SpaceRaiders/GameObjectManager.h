@@ -32,7 +32,7 @@ public:
 
 	
 	template<typename T>
-	void CreateGameObject(Vector2D position);
+	void CreateGameObject(Vector2D position , Vector2D initialvelocity = Vector2D(0.f,0.f));
 
 	const GameObject* GetGameObject(unsigned int key);
 private:
@@ -51,13 +51,14 @@ private:
 };
 
 template<typename T>
-void GameObjectManager::CreateGameObject(Vector2D position)
+void GameObjectManager::CreateGameObject(Vector2D position , Vector2D initialvelocity)
 {
 	++unitcreatedcount;
 
 	std::shared_ptr<T> SpawnedObj = std::make_shared<T>(unitcreatedcount , position);
 	ObjectMap.emplace(unitcreatedcount, SpawnedObj);
 
+	SpawnedObj->SetInitialVelocity(initialvelocity);
 	SpawnedObj->BeginPlay();
 }
 

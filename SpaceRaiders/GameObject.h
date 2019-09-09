@@ -57,6 +57,7 @@ public:
 	RaiderSprites GetSprite() { return sprite; }
 	EGameObjectType GetType() const  { return type; }
 	Delegate& OnCollosion() const { return (*Collision.get()); }
+	void SetInitialVelocity(Vector2D initvec) {	velocity = initvec; }
 	void UpdateRenderItemList();
 
 protected:

@@ -15,14 +15,21 @@ AlienLaser::AlienLaser(unsigned int key, Vector2D SpawnLocation /*= Vector2D(0, 
 	type = GameObj_AlienLaser;
 	sprite = RS_AlienLaser;
 
-	velocity.x = 0.f;
-	velocity.y = config.AlienLaserVelocityY;
+	
 }
 
 AlienLaser::~AlienLaser()
 {
 }
 
+
+void AlienLaser::BeginPlay()
+{
+	__super::BeginPlay();
+
+	velocity.x = 0.f;
+	velocity.y = config.AlienLaserVelocityY;
+}
 
 void AlienLaser::Update(float DeltaTime)
 {

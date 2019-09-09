@@ -11,15 +11,21 @@ PowerUp::PowerUp(unsigned int key, Vector2D SpawnLocation /*= Vector2D(0, 0)*/)
 	type = GameObj_PowerUp;
 	sprite = RS_PowerUp;
 
-	velocity.x = 0.f;
-	velocity.y = config.PowerUpVelocityY;
-	PowerupType = static_cast<EPowerUpType>(RandomGeneratorHelper::GetIntRand(PU_MoveSpeed, PU_AttackCount));
+	PowerupType = static_cast<EPowerUpType>(RandomGeneratorHelper::GetIntRand(PU_MoveSpeed, PU_Multishot));
 	PowerUpActivateTime = config.PowerUpActivateTime;
 }
 
 PowerUp::~PowerUp()
 {
 
+}
+
+void PowerUp::BeginPlay()
+{
+	__super::BeginPlay();
+
+	velocity.x = 0.f;
+	velocity.y = config.PowerUpVelocityY;
 }
 
 void PowerUp::Update(float DeltaTime)

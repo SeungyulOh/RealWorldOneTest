@@ -23,6 +23,13 @@ public:
 		y /= length;
 	}
 
+	Vector2D Rotate(float Radian)
+	{
+		float _x = x * cosf(Radian) - y * sinf(Radian);
+		float _y = x * sinf(Radian) + y * cosf(Radian);
+		return Vector2D(_x, _y);
+	}
+
 	float x;
 	float y;
 	

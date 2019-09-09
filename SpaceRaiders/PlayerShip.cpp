@@ -23,7 +23,7 @@ PlayerShip::PlayerShip(unsigned int key , Vector2D SpawnLocation)
 	type = GameObj_PlayerShip;
 	sprite = RS_Player;
 	firerate = config.PlayerFireRate;
-	velocity = Vector2D(1.f, 0.f);
+	
 }
 
 PlayerShip::~PlayerShip()
@@ -33,6 +33,8 @@ PlayerShip::~PlayerShip()
 void PlayerShip::BeginPlay()
 {
 	__super::BeginPlay();
+
+	velocity = Vector2D(1.f, 0.f);
 
 	DelegateManager::GetInstance().OnLeftPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnLeftPressed));
 	DelegateManager::GetInstance().OnRightPressed().AddDynamic(this, CALLBACK_NOPARAM(&DelegateObject::Callback_OnRightPressed));
@@ -60,20 +62,31 @@ void PlayerShip::Update(float DeltaTime)
 		}
 	}
 
-	//Check Buffs
-	/*for(std::vector<FBuff>::iterator it = ActivatedBuff.begin() ; it != ActivatedBuff.end() ; ++it)
+	//update activated buff and check if it is still activating
+	std::vector<FBuff> RemovePendingBuffs;
+	for (auto& element : ActivatedBuff)
 	{
-		if (it == ActivatedBuff.end())
-			break;
-
-		bool bDeactivated = it->Update(DeltaTime);
+		FBuff& buff = const_cast<FBuff&>(element);
+		bool bDeactivated = buff.Update(DeltaTime);
 		if (bDeactivated)
 		{
-			ActivatedBuff.erase(it--);
-			continue;
+			RemovePendingBuffs.push_back(buff);
 		}
+	}
 
-	}*/
+	//remove deactivated buffs in activatedbuff unordered_set.
+	for (auto& element : RemovePendingBuffs)
+	{
+		auto& foundit = ActivatedBuff.find(element);
+		if (foundit != ActivatedBuff.end())
+		{
+			FBuff& Deactivatedbuff = const_cast<FBuff&>(*foundit);
+			Deactivatedbuff.DeActivate(firerate, velocity, bMultiShot);
+			ActivatedBuff.erase(foundit);
+		}
+	}
+
+	
 }
 
 bool PlayerShip::DecreaseHp()
@@ -131,7 +144,20 @@ void PlayerShip::Callback_OnCollision(unsigned int targetuniquekey)
 				const PowerUp* powerup = dynamic_cast<const PowerUp*>(TargetObject);
 				if (powerup)
 				{
-					ActivatedBuff.push_back(FBuff(powerup->GetPowerUpType(), config.PowerUpActivateTime));
+					FBuff newbuff = FBuff(powerup->GetPowerUpType(), config.PowerUpActivateTime);
+					
+					//if there is the same buff, just update duration
+					auto foundbuff = ActivatedBuff.find(newbuff);
+					if (foundbuff != ActivatedBuff.end())
+					{
+						FBuff& targetbuff = const_cast<FBuff&>(*foundbuff);
+						targetbuff.Duration = newbuff.Duration;
+					}
+					else
+					{
+						newbuff.Activate(firerate, velocity, bMultiShot);
+						ActivatedBuff.emplace(newbuff);
+					}
 				}
 			}
 				
@@ -144,6 +170,61 @@ void PlayerShip::Callback_OnCollision(unsigned int targetuniquekey)
 
 void PlayerShip::Process_SpawnLaser()
 {
-	GameObjectManager::GetInstance().CreateGameObject<PlayerLaser>(Vector2D(pos.x, pos.y - 1));
+	if (bMultiShot)
+	{
+		Vector2D	OriginVelocity = Vector2D(0.f, -config.PlayerLaserVelocityY);
+		GameObjectManager::GetInstance().CreateGameObject<PlayerLaser>(Vector2D(pos.x, pos.y - 1) , OriginVelocity);
+		GameObjectManager::GetInstance().CreateGameObject<PlayerLaser>(Vector2D(pos.x, pos.y - 1), OriginVelocity.Rotate(4.f / PI));
+		GameObjectManager::GetInstance().CreateGameObject<PlayerLaser>(Vector2D(pos.x, pos.y - 1), OriginVelocity.Rotate(-4.f / PI));
+	}
+	else
+	{
+		GameObjectManager::GetInstance().CreateGameObject<PlayerLaser>(Vector2D(pos.x, pos.y - 1), Vector2D(0.f, -config.PlayerLaserVelocityY));
+	}
+	
 }
 
+bool FBuff::Update(float DeltaTime)
+{
+	Duration -= DeltaTime;
+	if (Duration < 0)
+		return true;
+
+	return false;
+}
+
+void FBuff::Activate(float& firerate, Vector2D& velocity, bool& isMultishot)
+{
+	switch (Type)
+	{
+	case PU_MoveSpeed:
+		velocity = velocity * config.PowerUpMoveSpeedScale;
+		break;
+
+	case PU_AttackSpeed:
+		firerate /= config.PowerUpAttackSpeedScale;
+		break;
+
+	case PU_Multishot:
+		isMultishot = true;
+		break;
+	}
+}
+
+void FBuff::DeActivate(float& firerate, Vector2D& velocity, bool& isMultishot)
+{
+	switch (Type)
+	{
+	case PU_MoveSpeed:
+		velocity = velocity / config.PowerUpMoveSpeedScale;
+		break;
+
+	case PU_AttackSpeed:
+		firerate *= config.PowerUpAttackSpeedScale;
+		break;
+
+	case PU_Multishot:
+		isMultishot = false;
+		break;
+	}
+}

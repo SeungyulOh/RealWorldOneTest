@@ -19,7 +19,7 @@ AlienFireRate = 1
 AlienLaserVelocityY = 5
 
 //PlayerShip
-PlayerFireRate = 0.5
+PlayerFireRate = 0.2
 
 //PlayerLaser
 PlayerLaserVelocityY = 10

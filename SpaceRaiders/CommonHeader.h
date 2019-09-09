@@ -41,6 +41,8 @@ struct FConfig
 	//PowerUp
 	float PowerUpVelocityY = 0.f;
 	float PowerUpActivateTime = 5.f;
+	float PowerUpMoveSpeedScale = 1.5f;
+	float PowerUpAttackSpeedScale = 2.f;
 };
 
 struct RenderItem

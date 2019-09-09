@@ -15,13 +15,16 @@ PlayerLaser::PlayerLaser(unsigned int key, Vector2D SpawnLocation /*= Vector2D(0
 {
 	type = GameObj_PlayerLaser;
 	sprite = RS_PlayerLaser;
-
-	velocity.x = 0.f;
-	velocity.y = -config.PlayerLaserVelocityY;
 }
 
 PlayerLaser::~PlayerLaser()
 {
+}
+
+void PlayerLaser::BeginPlay()
+{
+	__super::BeginPlay();
+
 }
 
 void PlayerLaser::Update(float DeltaTime)

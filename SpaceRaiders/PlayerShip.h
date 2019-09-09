@@ -4,23 +4,32 @@
 #include "DelegateObject.h"
 #include <queue>
 #include "PowerUp.h"
-
+#include <unordered_set>
 
 struct FBuff
 {
 	FBuff() {}
-	FBuff(EPowerUpType type, float duration) : Type(type), Duration(duration) {}
+	FBuff(EPowerUpType type, float duration) : Type(type), Duration(duration) 
+	{}
 
 	EPowerUpType Type = PU_None;
 	float Duration = 0.f;
 
-	bool Update(float DeltaTime)
+	bool operator == (FBuff const& rhs) const
 	{
-		Duration -= DeltaTime;
-		if (Duration < 0)
-			return true;
-		
-		return false;
+		return Type == rhs.Type;
+	}
+
+	bool Update(float DeltaTime);
+	void Activate(float& firerate, Vector2D& velocity, bool& isMultishot);
+	void DeActivate(float& firerate, Vector2D& velocity, bool& isMultishot);
+};
+
+struct KeyHasher_Buff
+{
+	std::size_t operator()(const FBuff& vec) const
+	{
+		return static_cast<size_t>(vec.Type);
 	}
 };
 
@@ -44,6 +53,7 @@ private:
 private:
 	float firetime = 0.f;
 	float firerate = 0.f;
+	bool bMultiShot = false;
 
-	std::vector<FBuff> ActivatedBuff;
+	std::unordered_set<FBuff , KeyHasher_Buff> ActivatedBuff;
 };

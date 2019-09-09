@@ -10,6 +10,7 @@ public:
 	~Alien();
 
 public:
+	virtual void BeginPlay() override;
 	virtual void Update(float DeltaTime) override;
 	virtual void Callback_OnCollision(unsigned int targetuniquekey) override;
 
